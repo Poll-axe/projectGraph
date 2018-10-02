@@ -1,22 +1,8 @@
-from json import JSONDecodeError
+from auth import access_token as token
+
 import time
 import requests
 
-"""
-
-примеры id
-122541914
-336081407
-186553202
-440350634
-346219128
-Cсылка для получения ключа доступа
-https://oauth.vk.com/authorize?client_id=6498822&display=page&redirect_uri=https://oauth.vk.com/blank.html&scope=friends&response_type=token&v=5.52
-
-"""
-
-
-# https://oauth.vk.com/authorize?client_id=6498822&display=page&redirect_uri=https://oauth.vk.com/blank.html&scope=friends&response_type=token&v=5.52
 
 # if __name__ == '__main__':
 
@@ -24,7 +10,7 @@ class MyVkApi:
 
     def __init__(self):
         self.parametrs = {
-            'access_token': '7d911e827b9016ae5f5d24d0935dca900be9e8a7cc3999747e3e4c6500514b2c2265cd355724c83463526',
+            'access_token': token,
             # 'user_id': 1,
             'v': 5.78}
         self.catalog = {}
@@ -74,7 +60,7 @@ class MyVkApi:
             d[user_id] = self.catalog[user_id]
             return d
 
-        g = {'user_ids': user_id, 'fields': 'sex'}    # параметры запроса
+        g = {'user_ids': user_id, 'fields': 'sex'}  # параметры запроса
         res = requests.get(url2, params={**self.parametrs, **g})
         # если ошибка, повторяем запрос
         if 'error' in res.json().keys():
