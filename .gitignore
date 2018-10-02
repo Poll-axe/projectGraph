@@ -4,3 +4,4 @@ __pycache__/
 base.txt
 venv/
 auth.py
+Graph2/auth.py
