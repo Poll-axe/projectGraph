@@ -3,3 +3,4 @@
 __pycache__/
 base.txt
 venv/
+auth.py
