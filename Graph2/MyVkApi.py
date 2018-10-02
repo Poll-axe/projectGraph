@@ -3,7 +3,7 @@ import time
 import requests
 
 """
-убрать в другой файл
+
 примеры id
 122541914
 336081407
