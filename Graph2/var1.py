@@ -36,7 +36,7 @@ class Getter:
             print('введено не число')
             return
 
-        user = api.MyVkApi.user_get(self.vk, user_ids=user_id)
+        user = api.MyVkApi.users_get(self.vk, user_ids=user_id)
         [print(i, ' ', user[i]) for i in user]
         if len(user) > 0:
             return True
@@ -56,7 +56,7 @@ class Getter:
             print('введено не число')
             return ids
         ids = api.MyVkApi.get_friends(self.vk, user_id=user_id)
-        users = api.MyVkApi.user_get(self.vk, ids)
+        users = api.MyVkApi.users_get(self.vk, ids)
         for i in users:
             print(i, users[i])
         print(ids)
@@ -105,11 +105,11 @@ class Getter:
         ite = len(friends) // 25
         for i in range(ite):
             y = api.MyVkApi.friends_friends(self.vk, friends[25 * i:25 * (i + 1) - i])
-            [api.MyVkApi.user_get(self.vk, y[_id]) for _id in y.keys()]
+            [api.MyVkApi.users_get(self.vk, y[_id]) for _id in y.keys()]
             d.update(y)
             print('Обработано ', 25 * (i + 1))
         y = api.MyVkApi.friends_friends(self.vk, friends[25 * ite:])
-        [api.MyVkApi.user_get(self.vk, y[_id]) for _id in y.keys()]
+        [api.MyVkApi.users_get(self.vk, y[_id]) for _id in y.keys()]
         d.update(y)
         return d
 

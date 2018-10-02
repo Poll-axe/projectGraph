@@ -6,11 +6,11 @@ class MyTestCase(unittest.TestCase):
 
     def test_user_get(self):
         a = MyVkApi.MyVkApi()
-        d = MyVkApi.MyVkApi.user_get(a, 336081407)
+        d = MyVkApi.MyVkApi.user_get1(a, 336081407)
         d1 = {336081407: ('Иванов', 'Вася', 2)}
         self.assertEquals(d, d1)
         user_id = [1, 2]
-        d = MyVkApi.MyVkApi.user_get(a, user_id)
+        d = MyVkApi.MyVkApi.users_get(a, user_id)
         d1 = {1: ('Дуров', 'Павел', 2), 2: ('Владимирова', 'Александра', 1)}
         self.assertEquals(d, d1)
 

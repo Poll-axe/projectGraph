@@ -46,7 +46,7 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
             except ValueError:
                 self.textEdit.setText('введено не число')
                 return
-            user = api.MyVkApi.user_get(self.vk, user_ids=user_id)
+            user = api.MyVkApi.users_get(self.vk, user_ids=user_id)
             [self.textEdit_2.append(str('\n' + str(i) + ' ' + str(user[i]))) for i in user]
 
         if self.menu2.isChecked():
@@ -58,7 +58,7 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
                 self.textEdit.setText('введено не число')
             else:
                 ids = api.MyVkApi.get_friends(self.vk, user_id=user_id)
-                users = api.MyVkApi.user_get(self.vk, ids)
+                users = api.MyVkApi.users_get(self.vk, ids)
                 [self.textEdit_2.append(str(str(i) + ' ' + str(users[i]))) for i in users]
                 self.textEdit_2.append(str('всего друзей ' + str(len(users))))
 

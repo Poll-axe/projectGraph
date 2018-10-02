@@ -24,7 +24,7 @@ class MyVkApi:
 
     def __init__(self):
         self.parametrs = {
-            'access_token': '3363af857c4ec2be479ed05d5752beeab0d049e80da95f22bee4f36157ca4d388d95d288920e0be18107c',
+            'access_token': '7d911e827b9016ae5f5d24d0935dca900be9e8a7cc3999747e3e4c6500514b2c2265cd355724c83463526',
             # 'user_id': 1,
             'v': 5.78}
         self.catalog = {}
@@ -119,56 +119,6 @@ class MyVkApi:
         d.update(p)
         return d
 
-    # не забыть очистить
-    def user_get(self, user_ids):
-        """
-
-        :param user_ids: id пользователя VK или список из id
-        :return: словарь с ключем id, именем и фамилией
-        """
-
-        d = {}
-        url2 = 'https://api.vk.com/method/users.get'
-        if type(user_ids) == int or (type(user_ids) == list and len(user_ids) == 1):
-            if type(user_ids) == list:
-                user_ids = int(user_ids[0])
-            if user_ids in self.catalog:
-                d[user_ids] = self.catalog[user_ids]
-                return d
-            g = {'user_ids': user_ids, 'fields': 'sex'}
-            res = requests.get(url2, params={**self.parametrs, **g})
-            if 'error' in res.json().keys():
-                if res.json()['error']['error_msg'] == 'Too many requests per second':
-                    time.sleep(0.3)
-                    res = requests.get(url2, params={**self.parametrs, **g})
-            d.update(self.update_catalog(res))
-            return d
-
-        p = {}
-
-        # если подан список, делаем из него строку с id, разделённую запятыми
-        if len(user_ids) > 1:
-            for i in tuple(user_ids):
-                if i in self.catalog:
-                    p[i] = self.catalog[i]
-            u = user_ids.copy()
-            for t in p.keys():
-                u.remove(t)
-
-            # защита от JSONDecodeError
-            for i in range(len(u) // 250 + 1):
-                user_ids_str = (','.join(map(str, u[i * 250:(i + 1) * 250])))
-                g = {'user_ids': user_ids_str, 'fields': 'sex'}
-                res = requests.get(url2, params={**self.parametrs, **g})
-                if 'error' in res.json().keys():
-                    if res.json()['error']['error_msg'] == 'Too many requests per second':
-                        time.sleep(0.3)
-                        res = requests.get(url2, params={**self.parametrs, **g})
-                k = self.update_catalog(res)
-                d.update(k)
-        d.update(p)
-        return d
-
     def get_friends(self, user_id):
         """
 
@@ -202,7 +152,7 @@ class MyVkApi:
         if 'error' in res.json():
             return []
 
-        self.catalog.update(self.user_get(res.json()['response']))
+        self.catalog.update(self.users_get(res.json()['response']))
         return res.json()['response']
 
     def do_request_cross_friend(self, user_id1, tg_uids):
@@ -247,7 +197,7 @@ class MyVkApi:
                     # d[usr['common_count']].append(usr['id'])
                 else:
                     d[usr['common_count']] = ([usr['id']])
-            self.catalog.update(self.user_get(for_chek))
+            self.catalog.update(self.users_get(for_chek))
             print('Обработано ', step * (i + 1))
         while step != 1:
             step = step // 2
@@ -270,7 +220,7 @@ class MyVkApi:
                         else:
                             d[usr['common_count']] = ([usr['id']])
 
-                    self.catalog.update(self.user_get(for_chek))
+                    self.catalog.update(self.users_get(for_chek))
                 else:
                     continue
         return d
